@@ -1,0 +1,46 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>dev.gaphunter.rxjavadisposableleakcompanion</id>
+    <name>RxJava Disposable Leak Companion</name>
+    <vendor>Gap Hunter Labs</vendor>
+    <description><![CDATA[
+        <p>Warning icon on an RxJava <code>xxx.subscribe(...)</code> call
+        (Observable/Flowable/Single/Maybe/Completable, RxJava 2.x/3.x)
+        written as a bare expression statement -- the returned
+        <code>Disposable</code> is discarded immediately, with no way to
+        ever call <code>.dispose()</code> on it later. RxJava's own
+        guidance is explicit: always dispose of subscriptions when no
+        longer needed, or this is a well-documented source of memory/
+        resource leaks.</p>
+        <p><b>100% static text/PSI analysis</b> -- matches the method
+        name and argument shape by simple text, so it works whether the
+        real RxJava jar is on the classpath or not. Java and Kotlin.
+        Confirmed gap: JetBrains' own bundled "Reactive Streams" plugin
+        (Ultimate-only) has 12 real inspections for Reactor/RxJava/Mutiny
+        -- none of them cover a discarded subscribe() Disposable.</p>
+        <p>Stated honestly: v0.1 only flags the lambda/callback-based
+        <code>subscribe(...)</code> overloads (0 to 4 lambda/method-
+        reference arguments), which are the overloads that actually
+        return <code>Disposable</code>. The single-argument
+        <code>subscribe(Observer)</code> overload returns
+        <code>void</code>/<code>Unit</code> and is never flagged.
+        Matches by simple method name, not real type resolution.</p>
+        <p>Free. No license nags, no telemetry, no network calls.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK1="true" supportsK2="true"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider language="JAVA"
+            implementationClass="dev.gaphunter.rxjavadisposableleakcompanion.gutter.DisposableLeakLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="kotlin"
+            implementationClass="dev.gaphunter.rxjavadisposableleakcompanion.gutter.DisposableLeakLineMarkerProvider"/>
+        <notificationGroup id="RxJava Disposable Leak Companion" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>
