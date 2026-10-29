@@ -49,7 +49,7 @@ Open any Java/Kotlin file using RxJava. A `subscribe(...)` call whose
 ## Support
 
 - **Bugs and feature requests:** [GitHub Issues](https://github.com/GapHunterLabs/rxjava-disposable-leak-companion/issues)
-- **Questions, or custom rules for a team's codebase:** **gaphunterlabs@gmail.com**
+- **Questions, or custom rules for a team's codebase:** **contact@gaphunterlabs.com**
 - **Security vulnerabilities:** report privately as described in [SECURITY.md](SECURITY.md), not in a public issue.
 - **Privacy and network behavior:** [PRIVACY.md](PRIVACY.md)
 
